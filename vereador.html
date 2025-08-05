@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Vereador - Cidade em Dia</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        :root {
+            --primary-color: #059669;
+            --secondary-color: #10b981;
+            --light-green: #d1fae5;
+            --dark-green: #047857;
+            --accent-green: #34d399;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --white: #ffffff;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-800);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .user-details h3 {
+            margin-bottom: 0.2rem;
+        }
+
+        .user-role {
+            opacity: 0.9;
+            font-size: 0.875rem;
+        }
+
+        .logout-btn {
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: var(--danger);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem 0;
+        }
+
+        .page-title {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-title h1 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-title p {
+            color: var(--gray-600);
+            font-size: 1.1rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--light-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: var(--gray-600);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .stat-trend {
+            font-size: 0.75rem;
+            color: var(--secondary-color);
+            font-weight: 500;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .main-panel {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .side-panel {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+        }
+
+        .panel-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Map */
+        .map-container {
+            height: 400px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        /* Denuncias List */
+        .denuncia-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .denuncia-item {
+            padding: 1rem;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .denuncia-item:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 2px 8px rgba(5, 150, 105, 0.1);
+        }
+
+        .denuncia-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .denuncia-title {
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .denuncia-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-recebida {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .status-andamento {
+            background: #fef3c7;
+            color: var(--warning);
+        }
+
+        .status-resolvida {
+            background: var(--light-green);
+            color: var(--primary-color);
+        }
+
+        .denuncia-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            margin-top: 0.5rem;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--dark-green);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-200);
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--gray-200);
+            border-radius: 6px;
+            background: var(--white);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-landmark"></i>
+                    <span>Painel do Vereador</span>
+                </a>
+                
+                <div class="user-info">
+                    <div class="user-avatar" id="user-avatar">V</div>
+                    <div class="user-details">
+                        <h3 id="user-name">Carregando...</h3>
+                        <div class="user-role">Vereador</div>
+                    </div>
+                    <button class="logout-btn" onclick="CidadeEmDia.logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Sair
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Page Title -->
+            <section class="page-title">
+                <h1><i class="fas fa-chart-line"></i> Painel de Acompanhamento</h1>
+                <p>Monitore todas as denúncias da cidade e acompanhe o progresso das soluções implementadas</p>
+            </section>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-trend">↗ +12 esta semana</div>
+                    </div>
+                    <div class="stat-number" id="total-denuncias">0</div>
+                    <div class="stat-label">Total de Denúncias na Cidade</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-trend">↗ +5 hoje</div>
+                    </div>
+                    <div class="stat-number" id="pendentes">0</div>
+                    <div class="stat-label">Aguardando Solução</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-trend">↗ +8 esta semana</div>
+                    </div>
+                    <div class="stat-number" id="resolvidas">0</div>
+                    <div class="stat-label">Problemas Resolvidos</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </div>
+                        <div class="stat-trend">28 bairros ativos</div>
+                    </div>
+                    <div class="stat-number" id="bairros">0</div>
+                    <div class="stat-label">Regiões com Denúncias</div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <a href="mapa.html" class="btn btn-primary">
+                    <i class="fas fa-map"></i>
+                    Ver Mapa Completo
+                </a>
+                <button class="btn btn-secondary" onclick="exportarRelatorio()">
+                    <i class="fas fa-download"></i>
+                    Exportar Relatório
+                </button>
+                <button class="btn btn-secondary" onclick="filtrarPorRegiao()">
+                    <i class="fas fa-filter"></i>
+                    Filtrar por Região
+                </button>
+            </div>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Main Panel -->
+                <div class="main-panel">
+                    <h2 class="panel-title">
+                        <i class="fas fa-list"></i>
+                        Denúncias Recentes da Cidade
+                    </h2>
+
+                    <!-- Filters -->
+                    <div class="filters">
+                        <select class="filter-select" id="filterStatus">
+                            <option value="">Todos os Status</option>
+                            <option value="Recebida">Recebida</option>
+                            <option value="Em andamento">Em Andamento</option>
+                            <option value="Resolvida">Resolvida</option>
+                        </select>
+                        
+                        <select class="filter-select" id="filterCategoria">
+                            <option value="">Todas as Categorias</option>
+                            <option value="buraco">Buracos</option>
+                            <option value="lixo">Lixo</option>
+                            <option value="iluminacao">Iluminação</option>
+                            <option value="queimada">Queimadas</option>
+                            <option value="outros">Outros</option>
+                        </select>
+                        
+                        <select class="filter-select" id="filterBairro">
+                            <option value="">Todos os Bairros</option>
+                        </select>
+                    </div>
+
+                    <div class="denuncia-list" id="denuncias-list">
+                        <!-- Denúncias serão carregadas aqui -->
+                    </div>
+                </div>
+
+                <!-- Side Panel -->
+                <div class="side-panel">
+                    <h2 class="panel-title">
+                        <i class="fas fa-chart-pie"></i>
+                        Análise por Categoria
+                    </h2>
+                    
+                    <div id="categoria-stats">
+                        <!-- Estatísticas por categoria -->
+                    </div>
+
+                    <hr style="margin: 1.5rem 0;">
+
+                    <h3 class="panel-title">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Top 5 Bairros
+                    </h3>
+                    
+                    <div id="bairros-ranking">
+                        <!-- Ranking de bairros -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // Verificar se é vereador
+        function verificarVereador() {
+            const usuario = CidadeEmDia.verificarPerfilEPermissao('vereador');
+            if (!usuario) return false;
+            
+            document.getElementById('user-name').textContent = usuario.nome;
+            const iniciais = usuario.nome.split(' ').map(n => n[0]).join('').toUpperCase();
+            document.getElementById('user-avatar').textContent = iniciais;
+            
+            return true;
+        }
+
+        // Carregar estatísticas gerais da cidade
+        function carregarEstatisticas() {
+            const denuncias = JSON.parse(localStorage.getItem('denuncias') || '[]');
+            
+            const total = denuncias.length;
+            const resolvidas = denuncias.filter(d => d.status === 'Resolvida').length;
+            const pendentes = denuncias.filter(d => d.status !== 'Resolvida').length;
+            
+            // Contar bairros únicos
+            const bairrosSet = new Set();
+            denuncias.forEach(d => {
+                if (d.bairro) bairrosSet.add(d.bairro);
+            });
+            
+            document.getElementById('total-denuncias').textContent = total;
+            document.getElementById('resolvidas').textContent = resolvidas;
+            document.getElementById('pendentes').textContent = pendentes;
+            document.getElementById('bairros').textContent = bairrosSet.size;
+        }
+
+        // Carregar todas as denúncias da cidade
+        function carregarDenuncias() {
+            const denuncias = JSON.parse(localStorage.getItem('denuncias') || '[]');
+            const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
+            
+            const listContainer = document.getElementById('denuncias-list');
+            
+            if (denuncias.length === 0) {
+                listContainer.innerHTML = '<p style="text-align: center; color: #6b7280;">Nenhuma denúncia encontrada.</p>';
+                return;
+            }
+
+            // Ordenar por data (mais recentes primeiro)
+            const denunciasOrdenadas = denuncias.sort((a, b) => 
+                new Date(b.dataCriacao) - new Date(a.dataCriacao)
+            );
+
+            listContainer.innerHTML = denunciasOrdenadas.map(denuncia => {
+                const usuario = usuarios.find(u => u.id === denuncia.usuarioId);
+                const nomeUsuario = usuario ? usuario.nome : 'Usuário não encontrado';
+                const statusClass = `status-${denuncia.status.toLowerCase().replace(/\s+/g, '-')}`;
+                const data = new Date(denuncia.dataCriacao).toLocaleDateString('pt-BR');
+                
+                return `
+                    <div class="denuncia-item">
+                        <div class="denuncia-header">
+                            <div class="denuncia-title">${denuncia.titulo}</div>
+                            <div class="denuncia-status ${statusClass}">${denuncia.status}</div>
+                        </div>
+                        <p style="margin: 0.5rem 0; color: #6b7280; font-size: 0.875rem;">
+                            ${denuncia.descricao}
+                        </p>
+                        <div class="denuncia-meta">
+                            <span><i class="fas fa-user"></i> ${nomeUsuario}</span>
+                            <span><i class="fas fa-map-marker-alt"></i> ${denuncia.bairro || 'N/A'}</span>
+                            <span><i class="fas fa-tag"></i> ${denuncia.categoria}</span>
+                            <span><i class="fas fa-calendar"></i> ${data}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Carregar estatísticas por categoria
+        function carregarEstatisticasCategorias() {
+            const denuncias = JSON.parse(localStorage.getItem('denuncias') || '[]');
+            const categorias = {};
+            
+            denuncias.forEach(d => {
+                categorias[d.categoria] = (categorias[d.categoria] || 0) + 1;
+            });
+
+            const container = document.getElementById('categoria-stats');
+            container.innerHTML = Object.entries(categorias)
+                .sort(([,a], [,b]) => b - a)
+                .map(([categoria, count]) => {
+                    const icone = {
+                        'buraco': '🕳️',
+                        'lixo': '🗑️',
+                        'iluminacao': '💡',
+                        'queimada': '🔥',
+                        'outros': '⚠️'
+                    }[categoria] || '📋';
+                    
+                    return `
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; padding: 0.5rem; background: #f9fafb; border-radius: 6px;">
+                            <span>${icone} ${categoria}</span>
+                            <strong>${count}</strong>
+                        </div>
+                    `;
+                }).join('');
+        }
+
+        // Carregar ranking de bairros
+        function carregarRankingBairros() {
+            const denuncias = JSON.parse(localStorage.getItem('denuncias') || '[]');
+            const bairros = {};
+            
+            denuncias.forEach(d => {
+                if (d.bairro) {
+                    bairros[d.bairro] = (bairros[d.bairro] || 0) + 1;
+                }
+            });
+
+            const container = document.getElementById('bairros-ranking');
+            const filterBairro = document.getElementById('filterBairro');
+            
+            // Preencher dropdown de filtro
+            filterBairro.innerHTML = '<option value="">Todos os Bairros</option>' +
+                Object.keys(bairros).map(bairro => 
+                    `<option value="${bairro}">${bairro}</option>`
+                ).join('');
+
+            // Mostrar top 5
+            container.innerHTML = Object.entries(bairros)
+                .sort(([,a], [,b]) => b - a)
+                .slice(0, 5)
+                .map(([bairro, count], index) => `
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <span>${index + 1}. ${bairro}</span>
+                        <strong style="color: var(--primary-color);">${count}</strong>
+                    </div>
+                `).join('');
+        }
+
+        // Funções dos botões
+        function exportarRelatorio() {
+            alert('Funcionalidade de exportação será implementada na versão completa!');
+        }
+
+        function filtrarPorRegiao() {
+            alert('Funcionalidade de filtro avançado será implementada na versão completa!');
+        }
+
+        // Função logout centralizada no app.js
+
+        // Inicializar página
+        document.addEventListener('DOMContentLoaded', function() {
+            if (verificarVereador()) {
+                carregarEstatisticas();
+                carregarDenuncias();
+                carregarEstatisticasCategorias();
+                carregarRankingBairros();
+            }
+        });
+    </script>
+</body>
+</html>

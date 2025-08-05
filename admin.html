@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo - Cidade em Dia</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --admin-primary: #dc2626;
+            --admin-secondary: #ef4444;
+            --admin-light: #fee2e2;
+            --admin-dark: #991b1b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-800);
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--admin-primary), var(--admin-secondary));
+            color: var(--white);
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        .admin-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem 0;
+        }
+
+        .page-header {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-header h1 {
+            color: var(--admin-primary);
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: var(--gray-600);
+            font-size: 1.1rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--admin-primary);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .stat-icon.red { background: var(--admin-primary); }
+        .stat-icon.green { background: var(--success); }
+        .stat-icon.yellow { background: var(--warning); }
+        .stat-icon.blue { background: var(--info); }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--admin-primary);
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: var(--gray-600);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .stat-change {
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+        }
+
+        .stat-change.positive {
+            background: #dcfce7;
+            color: var(--success);
+        }
+
+        .stat-change.negative {
+            background: #fee2e2;
+            color: var(--admin-primary);
+        }
+
+        /* Action Panel */
+        .action-panel {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .action-btn {
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        .action-btn-primary {
+            background: var(--admin-primary);
+            color: var(--white);
+        }
+
+        .action-btn-primary:hover {
+            background: var(--admin-dark);
+            transform: translateY(-2px);
+        }
+
+        .action-btn-secondary {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        .action-btn-secondary:hover {
+            background: var(--gray-200);
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .main-panel {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .side-panel {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+        }
+
+        .panel-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--gray-100);
+        }
+
+        /* Denuncias Management */
+        .denuncia-card {
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .denuncia-card:hover {
+            border-color: var(--admin-primary);
+            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.1);
+        }
+
+        .denuncia-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .denuncia-title {
+            font-weight: 600;
+            color: var(--gray-800);
+            font-size: 1.05rem;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-recebida {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .status-andamento {
+            background: #fef3c7;
+            color: var(--warning);
+        }
+
+        .status-resolvida {
+            background: #dcfce7;
+            color: var(--success);
+        }
+
+        .denuncia-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .action-mini-btn {
+            padding: 0.25rem 0.75rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-update {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-resolve {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-delete {
+            background: var(--admin-primary);
+            color: white;
+        }
+
+        /* Quick Stats */
+        .quick-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: var(--gray-50);
+            border-radius: 6px;
+        }
+
+        .quick-stat-label {
+            color: var(--gray-600);
+            font-size: 0.875rem;
+        }
+
+        .quick-stat-value {
+            font-weight: 600;
+            color: var(--admin-primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Admin Prefeitura</span>
+                    <span class="admin-badge">ADMINISTRATIVO</span>
+                </a>
+                
+                <div class="user-info">
+                    <div class="user-avatar" id="user-avatar">A</div>
+                    <div class="user-details">
+                        <h3 id="user-name">Carregando...</h3>
+                        <div style="font-size: 0.875rem; opacity: 0.9;">Administrador</div>
+                    </div>
+                    <button class="logout-btn" onclick="CidadeEmDia.logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Sair
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Page Header -->
+            <section class="page-header">
+                <h1><i class="fas fa-cogs"></i> Painel Administrativo</h1>
+                <p>Gerencie todas as denúncias da cidade, atualize status e monitore o desempenho dos serviços públicos</p>
+            </section>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon red">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div class="stat-change negative">Crítico</div>
+                    </div>
+                    <div class="stat-number" id="total-denuncias">0</div>
+                    <div class="stat-label">Total de Denúncias Ativas</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon yellow">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
+                        <div class="stat-change negative">+3 hoje</div>
+                    </div>
+                    <div class="stat-number" id="pendentes">0</div>
+                    <div class="stat-label">Aguardando Atendimento</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon blue">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <div class="stat-change positive">+2 hoje</div>
+                    </div>
+                    <div class="stat-number" id="andamento">0</div>
+                    <div class="stat-label">Em Atendimento</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon green">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-change positive">+5 hoje</div>
+                    </div>
+                    <div class="stat-number" id="resolvidas">0</div>
+                    <div class="stat-label">Resolvidas</div>
+                </div>
+            </div>
+
+            <!-- Action Panel -->
+            <div class="action-panel">
+                <h2 style="margin-bottom: 1rem; color: var(--admin-primary);">
+                    <i class="fas fa-lightning-bolt"></i> Ações Rápidas
+                </h2>
+                <div class="action-buttons">
+                    <button class="action-btn action-btn-primary" onclick="atualizarStatusLote()">
+                        <i class="fas fa-sync-alt"></i>
+                        Atualizar Status em Lote
+                    </button>
+                    <button class="action-btn action-btn-secondary" onclick="exportarRelatorio()">
+                        <i class="fas fa-file-export"></i>
+                        Exportar Relatório Completo
+                    </button>
+                    <button class="action-btn action-btn-secondary" onclick="enviarNotificacoes()">
+                        <i class="fas fa-bell"></i>
+                        Enviar Notificações
+                    </button>
+                    <a href="mapa.html" class="action-btn action-btn-secondary">
+                        <i class="fas fa-map"></i>
+                        Visualizar Mapa Completo
+                    </a>
+                </div>
+            </div>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Main Panel -->
+                <div class="main-panel">
+                    <h2 class="panel-title">
+                        <i class="fas fa-tasks"></i>
+                        Gerenciamento de Denúncias
+                    </h2>
+
+                    <div style="margin-bottom: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <select id="filterStatus" style="padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 6px;">
+                            <option value="">Todos os Status</option>
+                            <option value="Recebida">Recebida</option>
+                            <option value="Em andamento">Em Andamento</option>
+                            <option value="Resolvida">Resolvida</option>
+                        </select>
+                        
+                        <select id="filterCategoria" style="padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 6px;">
+                            <option value="">Todas as Categorias</option>
+                            <option value="buraco">Buracos</option>
+                            <option value="lixo">Lixo</option>
+                            <option value="iluminacao">Iluminação</option>
+                            <option value="queimada">Queimadas</option>
+                            <option value="outros">Outros</option>
+                        </select>
+                    </div>
+
+                    <div id="denuncias-list">
+                        <!-- Denúncias serão carregadas aqui -->
+                    </div>
+                </div>
+
+                <!-- Side Panel -->
+                <div class="side-panel">
+                    <h2 class="panel-title">
+                        <i class="fas fa-chart-bar"></i>
+                        Estatísticas Detalhadas
+                    </h2>
+                    
+                    <div id="detailed-stats">
+                        <!-- Estatísticas detalhadas -->
+                    </div>
+
+                    <hr style="margin: 1.5rem 0;">
+
+                    <h3 class="panel-title">
+                        <i class="fas fa-clock"></i>
+                        Ações Recentes
+                    </h3>
+                    
+                    <div id="recent-actions">
+                        <!-- Ações recentes -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/app.js"></script>
+    <script>
+        // Verificar se é admin/prefeitura
+        function verificarAdmin() {
+            const usuario = CidadeEmDia.verificarPerfilEPermissao('prefeitura');
+            if (!usuario) return false;
+            
+            document.getElementById('user-name').textContent = usuario.nome;
+            const iniciais = usuario.nome.split(' ').map(n => n[0]).join('').toUpperCase();
+            document.getElementById('user-avatar').textContent = iniciais;
+            
+            return true;
+        }
+
+        // Carregar estatísticas administrativas
+        function carregarEstatisticas() {
+            const denuncias = JSON.parse(localStorage.getItem('denuncias') || '[]');
+            
+            const total = denuncias.length;
+            const recebidas = denuncias.filter(d => d.status === 'Recebida').length;
+            const andamento = denuncias.filter(d => d.status === 'Em andamento').length;
+            const resolvidas = denuncias.filter(d => d.status === 'Resolvida').length;
+            
+            document.getElementById('total-denuncias').textContent = total;
+            document.getElementById('pendentes').textContent = recebidas;
+            document.getElementById('andamento').textContent = andamento;
+            document.getElementById('resolvidas').textContent = resolvidas;
+        }
+
+        // Carregar denúncias para gerenciamento
+        function carregarDenuncias() {
+            const denuncias = JSON.parse(localStorage.getItem('denuncias') || '[]');
+            const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
+            
+            const listContainer = document.getElementById('denuncias-list');
+            
+            if (denuncias.length === 0) {
+                listContainer.innerHTML = '<p style="text-align: center; color: #6b7280;">Nenhuma denúncia encontrada.</p>';
+                return;
+            }
+
+            listContainer.innerHTML = denuncias.map(denuncia => {
+                const usuario = usuarios.find(u => u.id === denuncia.usuarioId);
+                const nomeUsuario = usuario ? usuario.nome : 'Usuário não encontrado';
+                const statusClass = `status-${denuncia.status.toLowerCase().replace(/\s+/g, '-')}`;
+                const data = new Date(denuncia.dataCriacao).toLocaleDateString('pt-BR');
+                
+                return `
+                    <div class="denuncia-card">
+                        <div class="denuncia-header">
+                            <div>
+                                <div class="denuncia-title">${denuncia.titulo}</div>
+                                <div style="font-size: 0.875rem; color: #6b7280; margin-top: 0.25rem;">
+                                    Por: ${nomeUsuario} • ${data} • ${denuncia.bairro || 'N/A'}
+                                </div>
+                            </div>
+                            <div class="status-badge ${statusClass}">${denuncia.status}</div>
+                        </div>
+                        <p style="margin: 0.5rem 0; color: #6b7280; font-size: 0.875rem;">
+                            ${denuncia.descricao}
+                        </p>
+                        <div class="denuncia-actions">
+                            <button class="action-mini-btn btn-update" onclick="atualizarStatus(${denuncia.id}, 'Em andamento')">
+                                <i class="fas fa-play"></i> Iniciar Atendimento
+                            </button>
+                            <button class="action-mini-btn btn-resolve" onclick="atualizarStatus(${denuncia.id}, 'Resolvida')">
+                                <i class="fas fa-check"></i> Resolver
+                            </button>
+                            <button class="action-mini-btn btn-delete" onclick="excluirDenuncia(${denuncia.id})">
+                                <i class="fas fa-trash"></i> Excluir
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Atualizar status de uma denúncia
+        function atualizarStatus(denunciaId, novoStatus) {
+            const denuncias = JSON.parse(localStorage.getItem('denuncias') || '[]');
+            const denuncia = denuncias.find(d => d.id === denunciaId);
+            
+            if (denuncia) {
+                denuncia.status = novoStatus;
+                localStorage.setItem('denuncias', JSON.stringify(denuncias));
+                
+                // Adicionar à lista de ações recentes
+                adicionarAcaoRecente(`Status alterado para "${novoStatus}": ${denuncia.titulo}`);
+                
+                // Recarregar dados
+                carregarEstatisticas();
+                carregarDenuncias();
+                carregarEstatisticasDetalhadas();
+            }
+        }
+
+        // Excluir denúncia
+        function excluirDenuncia(denunciaId) {
+            if (confirm('Tem certeza que deseja excluir esta denúncia? Esta ação não pode ser desfeita.')) {
+                const denuncias = JSON.parse(localStorage.getItem('denuncias') || '[]');
+                const denuncia = denuncias.find(d => d.id === denunciaId);
+                const novasDenuncias = denuncias.filter(d => d.id !== denunciaId);
+                
+                localStorage.setItem('denuncias', JSON.stringify(novasDenuncias));
+                
+                adicionarAcaoRecente(`Denúncia excluída: ${denuncia?.titulo || 'N/A'}`);
+                
+                // Recarregar dados
+                carregarEstatisticas();
+                carregarDenuncias();
+                carregarEstatisticasDetalhadas();
+            }
+        }
+
+        // Carregar estatísticas detalhadas
+        function carregarEstatisticasDetalhadas() {
+            const denuncias = JSON.parse(localStorage.getItem('denuncias') || '[]');
+            
+            // Estatísticas por categoria
+            const categorias = {};
+            denuncias.forEach(d => {
+                categorias[d.categoria] = (categorias[d.categoria] || 0) + 1;
+            });
+
+            // Tempo médio de resolução (simulado)
+            const resolvidas = denuncias.filter(d => d.status === 'Resolvida');
+            const tempoMedio = resolvidas.length > 0 ? Math.floor(Math.random() * 5) + 2 : 0;
+
+            const container = document.getElementById('detailed-stats');
+            container.innerHTML = `
+                <div class="quick-stat">
+                    <span class="quick-stat-label">Tempo Médio de Resolução</span>
+                    <span class="quick-stat-value">${tempoMedio} dias</span>
+                </div>
+                <div class="quick-stat">
+                    <span class="quick-stat-label">Taxa de Resolução</span>
+                    <span class="quick-stat-value">${Math.round((resolvidas.length / denuncias.length) * 100) || 0}%</span>
+                </div>
+                <div class="quick-stat">
+                    <span class="quick-stat-label">Categoria Mais Comum</span>
+                    <span class="quick-stat-value">${Object.keys(categorias).reduce((a, b) => categorias[a] > categorias[b] ? a : b, 'N/A')}</span>
+                </div>
+                <div class="quick-stat">
+                    <span class="quick-stat-label">Denúncias Hoje</span>
+                    <span class="quick-stat-value">${Math.floor(Math.random() * 5) + 1}</span>
+                </div>
+            `;
+        }
+
+        // Adicionar ação recente
+        function adicionarAcaoRecente(acao) {
+            const acoes = JSON.parse(localStorage.getItem('acoes_recentes') || '[]');
+            acoes.unshift({
+                acao: acao,
+                timestamp: new Date().toISOString()
+            });
+            
+            // Manter apenas as 10 ações mais recentes
+            if (acoes.length > 10) {
+                acoes.splice(10);
+            }
+            
+            localStorage.setItem('acoes_recentes', JSON.stringify(acoes));
+            carregarAcoesRecentes();
+        }
+
+        // Carregar ações recentes
+        function carregarAcoesRecentes() {
+            const acoes = JSON.parse(localStorage.getItem('acoes_recentes') || '[]');
+            const container = document.getElementById('recent-actions');
+            
+            if (acoes.length === 0) {
+                container.innerHTML = '<p style="color: #6b7280; font-size: 0.875rem;">Nenhuma ação recente.</p>';
+                return;
+            }
+
+            container.innerHTML = acoes.map(acao => `
+                <div style="padding: 0.5rem; margin-bottom: 0.5rem; background: #f9fafb; border-radius: 6px; border-left: 3px solid var(--admin-primary);">
+                    <div style="font-size: 0.875rem; color: #374151;">${acao.acao}</div>
+                    <div style="font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem;">
+                        ${new Date(acao.timestamp).toLocaleString('pt-BR')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Funções dos botões de ação
+        function atualizarStatusLote() {
+            alert('Funcionalidade de atualização em lote será implementada na versão completa!');
+        }
+
+        function exportarRelatorio() {
+            alert('Funcionalidade de exportação de relatório será implementada na versão completa!');
+        }
+
+        function enviarNotificacoes() {
+            alert('Funcionalidade de envio de notificações será implementada na versão completa!');
+        }
+
+        // Função logout centralizada no app.js
+
+        // Inicializar página
+        document.addEventListener('DOMContentLoaded', function() {
+            if (verificarAdmin()) {
+                carregarEstatisticas();
+                carregarDenuncias();
+                carregarEstatisticasDetalhadas();
+                carregarAcoesRecentes();
+            }
+        });
+    </script>
+</body>
+</html>
