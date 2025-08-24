@@ -49,12 +49,12 @@ function verificarAutenticacao() {
 function obterDashboardPorPerfil(perfil) {
   switch (perfil) {
     case "vereador":
-      return "./pages/vereador.html";
+      return "./vereador.html";
     case "prefeitura":
-      return "./pages/admin.html";
+      return "./admin.html";
     case "cidadao":
     default:
-      return "./pages/dashboard.html";
+      return "./dashboard.html";
   }
 }
 
