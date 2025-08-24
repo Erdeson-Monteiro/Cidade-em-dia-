@@ -1,0 +1,27 @@
+{
+  "functions": {
+    "app/api/**/*.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        }
+      ]
+    }
+  ],
+  "devCommand": "npm run dev",
+  "buildCommand": "npm run build",
+  "outputDirectory": ".",
+  "framework": null,
+  "installCommand": "npm install",
+  "regions": ["gru1"],
+  "env": {
+    "VERCEL_TOOLBAR": "false"
+  }
+}
