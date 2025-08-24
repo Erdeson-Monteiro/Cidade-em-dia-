@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Cidade em Dia</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles/dashboard.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="container">
+        <div class="header-content">
+          <a href="../index.html" class="logo">
+            <i class="fas fa-city"></i>
+            <span>Cidade em Dia</span>
+          </a>
+
+          <div class="user-info">
+            <div class="user-avatar" id="user-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="user-details">
+              <div class="user-name" id="user-name">Carregando...</div>
+              <div class="user-role" id="user-role">Carregando...</div>
+            </div>
+            <button class="logout-btn" onclick="CidadeEmDia.logout()">
+              <i class="fas fa-sign-out-alt"></i>
+              Sair
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+      <div class="container">
+        <div class="nav-content">
+          <a href="./dashboard.html" class="nav-link active">
+            <i class="fas fa-tachometer-alt"></i>
+            Dashboard
+          </a>
+          <a href="./denuncia.html" class="nav-link">
+            <i class="fas fa-plus"></i>
+            Nova Denúncia
+          </a>
+          <a href="./mapa.html" class="nav-link">
+            <i class="fas fa-map"></i>
+            Mapa
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="container">
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+          <h1 class="welcome-title">Bem-vindo de volta!</h1>
+          <p class="welcome-subtitle">
+            Acompanhe suas denúncias e veja o impacto que você está causando na
+            cidade.
+          </p>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-number" id="total-denuncias">0</div>
+              <div class="stat-label">Total de Denúncias</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" id="andamento">0</div>
+              <div class="stat-label">Em Andamento</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" id="recebidas">0</div>
+              <div class="stat-label">Recebidas</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" id="resolvidas">0</div>
+              <div class="stat-label">Problemas Resolvidos</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+          <!-- Main Section -->
+          <section class="main-section">
+            <h2 class="section-title">
+              <i class="fas fa-clock"></i>
+              Denúncias Recentes
+            </h2>
+
+            <div class="loading" id="denuncias-loading">
+              <div class="spinner"></div>
+              <p>Carregando suas denúncias...</p>
+            </div>
+
+            <div class="denuncias-list" id="denuncias-list">
+              <!-- Denúncias serão carregadas aqui -->
+            </div>
+          </section>
+
+          <!-- Sidebar -->
+          <aside class="sidebar">
+            <h2 class="section-title">
+              <i class="fas fa-bolt"></i>
+              Ações Rápidas
+            </h2>
+
+            <div class="quick-actions">
+              <a href="./denuncia.html" class="action-card">
+                <div class="action-icon">
+                  <i class="fas fa-plus"></i>
+                </div>
+                <div class="action-title">Nova Denúncia</div>
+                <div class="action-description">Reporte um problema urbano</div>
+              </a>
+
+              <a href="./mapa.html" class="action-card">
+                <div class="action-icon">
+                  <i class="fas fa-map"></i>
+                </div>
+                <div class="action-title">Ver Mapa</div>
+                <div class="action-description">
+                  Explore denúncias na cidade
+                </div>
+              </a>
+
+              <a href="./vereador.html" class="action-card">
+                <div class="action-icon">
+                  <i class="fas fa-landmark"></i>
+                </div>
+                <div class="action-title">Painel Vereador</div>
+                <div class="action-description">
+                  Acompanhe o trabalho dos vereadores
+                </div>
+              </a>
+
+              <a href="./admin.html" class="action-card">
+                <div class="action-icon">
+                  <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="action-title">Painel Prefeitura</div>
+                <div class="action-description">
+                  Transparência da administração
+                </div>
+              </a>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </main>
+  </body>
+  <script src="../js/app.js"></script>
+  <script src="../js/dashboard.js"></script>
+</html>

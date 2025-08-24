@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Painel Administrativo - Cidade em Dia</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles/admin.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="header-content">
+          <a href="../index.html" class="logo">
+            <i class="fas fa-city"></i>
+            <span>Cidade em Dia - Admin</span>
+          </a>
+          <button class="btn btn-danger" onclick="CidadeEmDia.logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            Sair
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="container">
+        <section class="welcome-section">
+          <h1>Painel Administrativo</h1>
+          <p>Gerencie denúncias e monitore o sistema</p>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-number" id="total-denuncias">0</div>
+              <div>Total de Denúncias</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" id="total-usuarios">0</div>
+              <div>Usuários Cadastrados</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" id="resolvidas">0</div>
+              <div>Problemas Resolvidos</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" id="andamento">0</div>
+              <div>Em Andamento</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="main-section">
+          <h2 class="section-title">
+            <i class="fas fa-exclamation-triangle"></i>
+            Todas as Denúncias
+          </h2>
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Categoria</th>
+                <th>Status</th>
+                <th>Usuário</th>
+                <th>Data</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="denuncias-tbody">
+              <!-- Denúncias serão carregadas aqui -->
+            </tbody>
+          </table>
+        </section>
+
+        <section class="main-section">
+          <h2 class="section-title">
+            <i class="fas fa-cog"></i>
+            Ações do Sistema
+          </h2>
+
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap">
+            <button class="btn btn-primary" onclick="exportarDados()">
+              <i class="fas fa-download"></i>
+              Exportar Dados
+            </button>
+            <button class="btn btn-danger" onclick="limparDados()">
+              <i class="fas fa-trash"></i>
+              Limpar Dados
+            </button>
+            <button class="btn btn-primary" onclick="mostrarInfoSistema()">
+              <i class="fas fa-info-circle"></i>
+              Info do Sistema
+            </button>
+          </div>
+        </section>
+      </div>
+    </main>
+  </body>
+  <script src="../js/app.js"></script>
+  <script src="../js/admin.js"></script>
+</html>

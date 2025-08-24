@@ -1,97 +1,40 @@
-# Cidade em Dia - Sistema de Denúncias (Versão Estática)
+# Cidade em Dia - Sistema de Denúncias
 
-## 📋 Sobre o Projeto
-
-O **Cidade em Dia** é um sistema web moderno para gerenciamento de denúncias urbanas, permitindo que cidadãos reportem problemas na cidade de forma simples e eficiente. Esta é uma versão estática desenvolvida com HTML, CSS e JavaScript, utilizando LocalStorage para simular funcionalidades de banco de dados.
-
-![Cidade em Dia](https://img.shields.io/badge/Status-Demo-brightgreen)
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
+Um sistema completo de denúncias urbanas que funciona totalmente no navegador usando localStorage. Permite que cidadãos reportem problemas, vereadores acompanhem suas regiões e a prefeitura gerencie todo o sistema.
 
 ## 🚀 Funcionalidades
 
-### ✅ Já Implementadas
+### 👥 Sistema de Usuários
+- **Cidadãos**: Podem fazer denúncias e acompanhar o status
+- **Vereadores**: Acompanham denúncias de suas regiões
+- **Prefeitura**: Gerencia todo o sistema
 
-- **Sistema de Autenticação**
-  - Login e cadastro de usuários
-  - Diferentes perfis (Cidadão, Vereador, Prefeitura)
-  - Sessão persistente com LocalStorage
+### 📝 Sistema de Denúncias
+- Categorias: Buraco, Lixo, Iluminação, Queimada, Outros
+- Status: Recebida, Em andamento, Resolvida
+- Localização com mapa interativo
+- Sistema de likes e comentários
+- Filtros por categoria, status e bairro
 
-- **Gestão de Denúncias**
-  - Criação de denúncias com categorização
-  - Upload de imagens (preview)
-  - Geolocalização com mapa interativo
-  - Status de acompanhamento (Recebida, Em Andamento, Resolvida)
-
-- **Dashboard Interativo**
-  - Estatísticas pessoais do usuário
-  - Lista de denúncias recentes
-  - Ações rápidas
-
-- **Mapa Interativo**
+### 🗺️ Mapa Interativo
   - Visualização de todas as denúncias
   - Filtros por categoria e status
-  - Popups informativos
   - Estatísticas em tempo real
+- Detecção automática de localização
 
-- **Interface Responsiva**
-  - Design moderno e intuitivo
-  - Totalmente responsivo para mobile
-  - Animações e transições suaves
+### 📊 Dashboard Administrativo
+- Estatísticas completas
+- Gerenciamento de denúncias
+- Exportação de dados
+- Reset do sistema
 
-## 🎯 Categorias de Denúncias
+## 🛠️ Como Usar
 
-- 🕳️ **Buracos** - Problemas na pavimentação
-- 🗑️ **Lixo** - Descarte irregular e limpeza urbana
-- 💡 **Iluminação** - Problemas na iluminação pública
-- 🔥 **Queimadas** - Focos de incêndio e queimadas
-- ⚠️ **Outros** - Demais problemas urbanos
+### 1. Acesse o Sistema
+Abra o arquivo `index.html` em qualquer navegador moderno.
 
-## 🛠️ Tecnologias Utilizadas
-
-### Frontend
-- **HTML5** - Estrutura semântica
-- **CSS3** - Estilização moderna com CSS Variables
-- **JavaScript (Vanilla)** - Lógica da aplicação
-- **Leaflet.js** - Mapas interativos
-- **Font Awesome** - Ícones
-- **Google Fonts** - Tipografia (Inter)
-
-### Recursos Externos
-- **OpenStreetMap** - Tiles do mapa
-- **Geolocation API** - Localização do usuário
-- **LocalStorage API** - Persistência de dados
-
-## 📁 Estrutura do Projeto
-
-```
-cidadeemdia-static/
-├── index.html              # Página inicial
-├── login.html              # Página de login
-├── cadastro.html           # Página de cadastro
-├── dashboard.html          # Dashboard do usuário
-├── denuncia.html           # Formulário de nova denúncia
-├── mapa.html               # Mapa interativo
-├── js/
-│   └── app.js              # JavaScript principal
-└── README.md               # Este arquivo
-```
-
-## 🚀 Como Usar
-
-### 1. Clone/Download do Projeto
-```bash
-git clone https://github.com/seu-usuario/cidadeemdia-static.git
-cd cidadeemdia-static
-```
-
-### 2. Executar Localmente
-- Abra o arquivo `index.html` em seu navegador
-- Ou use um servidor local como Live Server (VSCode)
-
-### 3. Contas de Teste
-O sistema vem com usuários pré-cadastrados para teste:
+### 2. Faça Login
+Use uma das contas pré-cadastradas:
 
 **Cidadão:**
 - Email: `joao@email.com`
@@ -101,107 +44,164 @@ O sistema vem com usuários pré-cadastrados para teste:
 - Email: `maria@email.com`
 - Senha: `123456`
 
-**Prefeitura:**
+**Admin (Prefeitura):**
 - Email: `admin@prefeitura.sp.gov.br`
 - Senha: `123456`
 
-### 4. Navegação
-1. **Página Inicial** - Apresentação do sistema
-2. **Cadastro** - Criar nova conta
-3. **Login** - Acessar o sistema
-4. **Dashboard** - Visão geral das denúncias
-5. **Nova Denúncia** - Reportar problema urbano
-6. **Mapa** - Visualizar denúncias na cidade
+### 3. Crie uma Nova Conta
+- Acesse "Criar conta" na página de login
+- Preencha seus dados
+- Escolha seu perfil (Cidadão, Vereador ou Prefeitura)
 
-## 💾 Dados Simulados
+### 4. Faça Denúncias (Cidadãos)
+- Faça login como cidadão
+- Clique em "Nova Denúncia"
+- Preencha os dados do problema
+- Marque a localização no mapa
+- Envie a denúncia
 
-O sistema utiliza LocalStorage para simular um banco de dados, incluindo:
+### 5. Acompanhe Denúncias (Vereadores)
+- Faça login como vereador
+- Veja todas as denúncias da cidade
+- Use filtros para encontrar problemas específicos
+- Atualize o status das denúncias
 
-- **Usuários** - Dados de login e perfil
-- **Denúncias** - Relatórios com geolocalização
-- **Estatísticas** - Contadores e métricas
+### 6. Gerencie o Sistema (Prefeitura)
+- Faça login como admin
+- Veja estatísticas completas
+- Gerencie todas as denúncias
+- Exporte dados do sistema
+
+## 📁 Estrutura do Projeto
+
+```
+Cidade-em-dia-/
+├── index.html          # Página inicial
+├── login.html          # Sistema de login
+├── cadastro.html       # Cadastro de usuários
+├── dashboard.html      # Dashboard do cidadão
+├── vereador.html       # Painel do vereador
+├── admin.html          # Painel administrativo
+├── denuncia.html       # Formulário de denúncia
+├── mapa.html           # Mapa interativo
+├── js/
+│   └── app.js          # Lógica principal do sistema
+└── README.md           # Este arquivo
+```
+
+## 💾 Armazenamento de Dados
+
+O sistema usa **localStorage** do navegador para armazenar:
+
+- **Usuários**: Dados dos usuários cadastrados
+- **Denúncias**: Todas as denúncias criadas
+- **Comentários**: Comentários nas denúncias
+- **Sessão**: Usuário logado atualmente
 
 ### Dados Iniciais
-- 3 usuários de teste (diferentes perfis)
+O sistema vem com dados mockados para demonstração:
+- 3 usuários (cidadão, vereador, admin)
 - 5 denúncias de exemplo
-- Várias categorias e status
-
-## 🎨 Design System
-
-### Cores Principais
-- **Azul Primário:** `#1e40af`
-- **Azul Secundário:** `#3b82f6`
-- **Azul Claro:** `#eff6ff`
-- **Verde Sucesso:** `#10b981`
-- **Laranja Aviso:** `#f59e0b`
-- **Vermelho Erro:** `#ef4444`
-
-### Tipografia
-- **Fonte:** Inter (Google Fonts)
-- **Pesos:** 300, 400, 500, 600, 700
-
-## 📱 Responsividade
-
-O sistema é totalmente responsivo, adaptando-se a:
-- **Desktop** (1200px+)
-- **Tablet** (768px - 1199px)
-- **Mobile** (até 767px)
+- 3 comentários de exemplo
 
 ## 🔧 Funcionalidades Técnicas
 
-### Geolocalização
-- Detecção automática da localização do usuário
-- Seleção manual no mapa
-- Coordenadas precisas (latitude/longitude)
+### Sistema de Autenticação
+- Login com email e senha
+- Verificação de perfil e permissões
+- Redirecionamento automático por perfil
+- Logout seguro
 
-### Validações
-- Validação de email
-- Confirmação de senha
-- Campos obrigatórios
-- Tipos de arquivo (imagens)
+### Gerenciamento de Denúncias
+- Criação de denúncias com localização
+- Atualização de status
+- Sistema de likes
+- Comentários
+- Filtros avançados
 
-### Persistência
-- Dados salvos no LocalStorage
-- Sessão de usuário persistente
-- Sincronização entre páginas
+### Estatísticas
+- Total de denúncias
+- Status por categoria
+- Denúncias por bairro
+- Usuários cadastrados
 
-## 🎯 Próximas Melhorias
+### Exportação e Backup
+- Exportar todos os dados em JSON
+- Backup completo do sistema
+- Reset para dados iniciais
 
-Para uma versão completa, poderiam ser implementadas:
+## 🎨 Interface
 
-- Backend com banco de dados real
+- Design moderno e responsivo
+- Cores consistentes e acessíveis
+- Ícones intuitivos
+- Animações suaves
+- Compatível com mobile
+
+## 🌐 Tecnologias Utilizadas
+
+- **HTML5**: Estrutura das páginas
+- **CSS3**: Estilização e responsividade
+- **JavaScript**: Lógica do sistema
+- **localStorage**: Armazenamento de dados
+- **Leaflet.js**: Mapas interativos
+- **Font Awesome**: Ícones
+- **Google Fonts**: Tipografia
+
+## 🔒 Segurança
+
+- Validação de dados no frontend
+- Verificação de permissões por página
+- Proteção contra acesso não autorizado
+- Sanitização de inputs
+
+## 📱 Responsividade
+
+O sistema funciona perfeitamente em:
+- Desktop
+- Tablet
+- Smartphone
+
+## 🚀 Como Executar
+
+1. **Download**: Baixe todos os arquivos
+2. **Navegador**: Abra `index.html` em qualquer navegador
+3. **Login**: Use uma das contas de demonstração
+4. **Explore**: Teste todas as funcionalidades
+
+## 📊 Dados de Demonstração
+
+### Usuários Pré-cadastrados
+- João Silva (Cidadão)
+- Maria Santos (Vereador)
+- Carlos Admin (Prefeitura)
+
+### Denúncias de Exemplo
+- Buraco na Rua das Flores
+- Lixo acumulado na praça
+- Poste de luz queimado
+- Queimada em terreno baldio
+- Calçada quebrada
+
+## 🔄 Atualizações Futuras
+
 - Sistema de notificações
-- Upload real de imagens
-- Comentários e interações
-- Sistema de avaliações
-- Relatórios e analytics
-- API para integração mobile
-- Sistema de notificações push
+- Upload de imagens
+- Relatórios em PDF
+- Integração com APIs externas
+- Sistema de pontuação para cidadãos
 
-## 🤝 Contribuição
+## 📞 Suporte
 
-Este é um projeto de demonstração. Para contribuir:
-
-1. Faça um fork do projeto
-2. Crie uma branch para sua feature
-3. Commit suas mudanças
-4. Faça um push para a branch
-5. Abra um Pull Request
+Para dúvidas ou sugestões:
+- Verifique este README
+- Teste todas as funcionalidades
+- Use as contas de demonstração
 
 ## 📄 Licença
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
-## 👨‍💻 Autor
-
-Desenvolvido como demonstração técnica do sistema Cidade em Dia.
+Este projeto é de uso livre para fins educacionais e de demonstração.
 
 ---
 
-## 🌐 Demo Online
-
-Para ver o projeto funcionando, acesse: [Demo do Cidade em Dia](https://seu-usuario.github.io/cidadeemdia-static)
-
----
-
-**Nota:** Esta é uma versão estática para demonstração. Para uso em produção, recomenda-se implementar um backend robusto com banco de dados, autenticação segura e APIs adequadas.
+**Cidade em Dia** - Tornando sua cidade melhor, uma denúncia de cada vez! 🏙️✨

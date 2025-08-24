@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mapa - Cidade em Dia</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <link rel="stylesheet" href="../styles/mapa.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <header class="header">
+        <div class="header-content">
+          <a
+            href="#"
+            class="logo"
+            onclick="CidadeEmDia.redirecionarParaDashboard(); return false;"
+          >
+            <i class="fas fa-city"></i>
+            <span>Cidade em Dia</span>
+          </a>
+
+          <div class="header-actions" id="header-actions">
+            <!-- Links serão carregados baseado no perfil -->
+          </div>
+        </div>
+      </header>
+
+      <!-- Map Container -->
+      <div class="map-container">
+        <div id="map"></div>
+
+        <!-- Loading -->
+        <div class="loading" id="loading">
+          <div class="spinner"></div>
+          <p>Carregando denúncias...</p>
+        </div>
+
+        <!-- Map Controls -->
+        <div class="map-controls">
+          <div class="control-group">
+            <div class="control-title">Filtros por Categoria</div>
+            <div class="filter-options">
+              <div class="filter-option">
+                <input
+                  type="checkbox"
+                  id="filter-buraco"
+                  value="buraco"
+                  checked
+                />
+                <span class="category-icon">🕳️</span>
+                <label for="filter-buraco">Buraco</label>
+              </div>
+              <div class="filter-option">
+                <input type="checkbox" id="filter-lixo" value="lixo" checked />
+                <span class="category-icon">🗑️</span>
+                <label for="filter-lixo">Lixo</label>
+              </div>
+              <div class="filter-option">
+                <input
+                  type="checkbox"
+                  id="filter-iluminacao"
+                  value="iluminacao"
+                  checked
+                />
+                <span class="category-icon">💡</span>
+                <label for="filter-iluminacao">Iluminação</label>
+              </div>
+              <div class="filter-option">
+                <input
+                  type="checkbox"
+                  id="filter-queimada"
+                  value="queimada"
+                  checked
+                />
+                <span class="category-icon">🔥</span>
+                <label for="filter-queimada">Queimada</label>
+              </div>
+              <div class="filter-option">
+                <input
+                  type="checkbox"
+                  id="filter-outros"
+                  value="outros"
+                  checked
+                />
+                <span class="category-icon">⚠️</span>
+                <label for="filter-outros">Outros</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <div class="control-title">Filtros por Status</div>
+            <div class="filter-options">
+              <div class="filter-option">
+                <input
+                  type="checkbox"
+                  id="filter-recebida"
+                  value="Recebida"
+                  checked
+                />
+                <label for="filter-recebida">Recebida</label>
+              </div>
+              <div class="filter-option">
+                <input
+                  type="checkbox"
+                  id="filter-andamento"
+                  value="Em andamento"
+                  checked
+                />
+                <label for="filter-andamento">Em andamento</label>
+              </div>
+              <div class="filter-option">
+                <input
+                  type="checkbox"
+                  id="filter-resolvida"
+                  value="Resolvida"
+                  checked
+                />
+                <label for="filter-resolvida">Resolvida</label>
+              </div>
+            </div>
+          </div>
+
+          <button
+            class="btn btn-primary"
+            onclick="carregarDenuncias()"
+            style="width: 100%"
+          >
+            <i class="fas fa-sync-alt"></i>
+            Atualizar
+          </button>
+        </div>
+
+        <!-- Stats Panel -->
+        <div class="stats-panel">
+          <div class="stats-title">Estatísticas</div>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <div class="stat-number" id="total-denuncias">0</div>
+              <div class="stat-label">Total</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number" id="resolvidas">0</div>
+              <div class="stat-label">Resolvidas</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number" id="andamento">0</div>
+              <div class="stat-label">Em andamento</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number" id="recebidas">0</div>
+              <div class="stat-label">Recebidas</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/mapa.js"></script>
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastro - Cidade em Dia</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../styles/register.css" />
+  </head>
+  <body>
+    <div class="cadastro-container">
+      <div class="cadastro-header">
+        <div class="logo">
+          <i class="fas fa-city"></i>
+          <span>Cidade em Dia</span>
+        </div>
+        <h1>Criar Conta</h1>
+        <p>Junte-se a nós para tornar sua cidade melhor</p>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="step-indicators">
+          <div class="step-indicator active" id="step1">1</div>
+          <div class="step-indicator" id="step2">2</div>
+          <div class="step-indicator" id="step3">3</div>
+          <div class="step-indicator" id="step4">4</div>
+        </div>
+      </div>
+
+      <form class="cadastro-form" id="cadastroForm">
+        <div class="alert alert-error" id="errorAlert"></div>
+        <div class="alert alert-success" id="successAlert"></div>
+
+        <!-- Step 1: Nome -->
+        <div class="step active" id="step1-content">
+          <div class="step-title">Qual é o seu nome?</div>
+          <div class="step-description">
+            Digite seu nome completo para identificarmos você no sistema.
+          </div>
+
+          <div class="form-group">
+            <label for="nome">Nome Completo *</label>
+            <input
+              type="text"
+              id="nome"
+              name="nome"
+              required
+              placeholder="Ex: João Silva Santos"
+            />
+            <div class="error-message" id="nome-error">
+              Por favor, digite seu nome completo
+            </div>
+          </div>
+
+          <button type="button" class="btn" onclick="nextStep()">
+            <span id="btnText">Próximo</span>
+            <span class="loading">
+              <i class="fas fa-spinner fa-spin"></i>
+            </span>
+          </button>
+        </div>
+
+        <!-- Step 2: Email -->
+        <div class="step" id="step2-content">
+          <div class="step-title">Qual é o seu e-mail?</div>
+          <div class="step-description">
+            Usaremos este e-mail para você fazer login no sistema.
+          </div>
+
+          <div class="form-group">
+            <label for="email">E-mail *</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              placeholder="Ex: joao@email.com"
+            />
+            <div class="error-message" id="email-error">
+              Por favor, digite um e-mail válido
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 1rem">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="prevStep()"
+            >
+              <i class="fas fa-arrow-left"></i>
+              Voltar
+            </button>
+            <button type="button" class="btn" onclick="nextStep()">
+              <span id="btnText">Próximo</span>
+              <span class="loading">
+                <i class="fas fa-spinner fa-spin"></i>
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 3: Senha -->
+        <div class="step" id="step3-content">
+          <div class="step-title">Crie uma senha segura</div>
+          <div class="step-description">
+            Escolha uma senha com pelo menos 6 caracteres para proteger sua
+            conta.
+          </div>
+
+          <div class="form-group">
+            <label for="senha">Senha *</label>
+            <input
+              type="password"
+              id="senha"
+              name="senha"
+              required
+              placeholder="Mínimo 6 caracteres"
+            />
+            <div class="error-message" id="senha-error">
+              A senha deve ter pelo menos 6 caracteres
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="confirmar_senha">Confirmar Senha *</label>
+            <input
+              type="password"
+              id="confirmar_senha"
+              name="confirmar_senha"
+              required
+              placeholder="Digite a senha novamente"
+            />
+            <div class="error-message" id="confirmar_senha-error">
+              As senhas não conferem
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 1rem">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="prevStep()"
+            >
+              <i class="fas fa-arrow-left"></i>
+              Voltar
+            </button>
+            <button type="button" class="btn" onclick="nextStep()">
+              <span id="btnText">Próximo</span>
+              <span class="loading">
+                <i class="fas fa-spinner fa-spin"></i>
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 4: Tipo de Usuário -->
+        <div class="step" id="step4-content">
+          <div class="step-title">Qual é o seu perfil?</div>
+          <div class="step-description">
+            Escolha como você vai usar o sistema.
+          </div>
+
+          <div class="form-group">
+            <label for="perfil">Tipo de Usuário *</label>
+            <select
+              id="perfil"
+              name="perfil"
+              required
+              onchange="mostrarCampoEspecifico()"
+            >
+              <option value="">Selecione seu perfil</option>
+              <option value="cidadao">Cidadão</option>
+              <option value="vereador">Vereador</option>
+              <option value="prefeitura">Funcionário da Prefeitura</option>
+            </select>
+            <div class="error-message" id="perfil-error">
+              Por favor, selecione um perfil
+            </div>
+          </div>
+
+          <!-- Campo específico para Vereador -->
+          <div class="form-group" id="campo-vereador" style="display: none">
+            <label for="numero-vereador">Número de Vereador *</label>
+            <input type="text" id="numero-vereador" placeholder="Ex: 12345" />
+            <div class="validation-info">
+              <i class="fas fa-info-circle"></i>
+              Digite o número oficial do seu mandato de vereador para validação.
+            </div>
+            <div class="error-message" id="numero-vereador-error">
+              Por favor, digite o número de vereador
+            </div>
+          </div>
+
+          <!-- Campo específico para Prefeitura -->
+          <div class="form-group" id="campo-prefeitura" style="display: none">
+            <label for="matricula-prefeitura">Matrícula Funcional *</label>
+            <input
+              type="text"
+              id="matricula-prefeitura"
+              placeholder="Ex: PREFE-2024-001"
+            />
+            <div class="validation-info">
+              <i class="fas fa-info-circle"></i>
+              Digite sua matrícula funcional da prefeitura para validação.
+            </div>
+            <div class="error-message" id="matricula-prefeitura-error">
+              Por favor, digite a matrícula funcional
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 1rem">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="prevStep()"
+            >
+              <i class="fas fa-arrow-left"></i>
+              Voltar
+            </button>
+            <button type="submit" class="btn" id="submitBtn">
+              <span class="loading" id="loading">
+                <i class="fas fa-spinner fa-spin"></i>
+              </span>
+              <span id="btnText">
+                <i class="fas fa-user-plus"></i>
+                Criar Conta
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <div class="links">
+          <span>Já tem uma conta?</span>
+          <a href="./login.html">Entrar</a>
+          <span>•</span>
+          <a href="../index.html">Início</a>
+        </div>
+      </form>
+    </div>
+  </body>
+  <script src="../js/app.js"></script>
+  <script src="../js/registre.js"></script>
+</html>

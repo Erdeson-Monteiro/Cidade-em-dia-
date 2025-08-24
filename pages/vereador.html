@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Painel do Vereador - Cidade em Dia</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles/veriador.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="header-content">
+          <a href="../index.html" class="logo">
+            <i class="fas fa-city"></i>
+            <span>Cidade em Dia - Vereador</span>
+          </a>
+
+          <div class="user-info">
+            <div class="user-avatar" id="user-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="user-details">
+              <div class="user-name" id="user-name">Carregando...</div>
+              <div class="user-role" id="user-role">Carregando...</div>
+            </div>
+            <button class="btn btn-danger" onclick="CidadeEmDia.logout()">
+              <i class="fas fa-sign-out-alt"></i>
+              Sair
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="container">
+        <section class="welcome-section">
+          <h1 class="welcome-title">Painel do Vereador</h1>
+          <p class="welcome-subtitle">
+            Acompanhe e gerencie denúncias da sua região.
+          </p>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-number" id="total-denuncias">0</div>
+              <div class="stat-label">Total de Denúncias</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" id="resolvidas">0</div>
+              <div class="stat-label">Problemas Resolvidos</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" id="andamento">0</div>
+              <div class="stat-label">Em Andamento</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" id="recebidas">0</div>
+              <div class="stat-label">Recebidas</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="main-section">
+          <h2 class="section-title">
+            <i class="fas fa-exclamation-triangle"></i>
+            Denúncias da Região
+          </h2>
+
+          <div class="filters">
+            <div class="filter-group">
+              <label for="filter-status">Status</label>
+              <select id="filter-status" onchange="filtrarDenuncias()">
+                <option value="">Todos os status</option>
+                <option value="Recebida">Recebida</option>
+                <option value="Em andamento">Em andamento</option>
+                <option value="Resolvida">Resolvida</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label for="filter-categoria">Categoria</label>
+              <select id="filter-categoria" onchange="filtrarDenuncias()">
+                <option value="">Todas as categorias</option>
+                <option value="buraco">Buraco</option>
+                <option value="lixo">Lixo</option>
+                <option value="iluminacao">Iluminação</option>
+                <option value="queimada">Queimada</option>
+                <option value="outros">Outros</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label for="filter-bairro">Bairro</label>
+              <select id="filter-bairro" onchange="filtrarDenuncias()">
+                <option value="">Todos os bairros</option>
+                <option value="Centro">Centro</option>
+                <option value="Liberdade">Liberdade</option>
+                <option value="Vila Madalena">Vila Madalena</option>
+                <option value="Itaquera">Itaquera</option>
+                <option value="Moema">Moema</option>
+              </select>
+            </div>
+          </div>
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Categoria</th>
+                <th>Bairro</th>
+                <th>Status</th>
+                <th>Cidadão</th>
+                <th>Data</th>
+                <th>Likes</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="denuncias-tbody">
+              <!-- Denúncias serão carregadas aqui -->
+            </tbody>
+          </table>
+        </section>
+
+        <section class="main-section">
+          <h2 class="section-title">
+            <i class="fas fa-chart-bar"></i>
+            Estatísticas por Bairro
+          </h2>
+
+          <div class="stats-grid">
+            <div
+              class="stat-card"
+              style="background: var(--light-blue); color: var(--primary-blue)"
+            >
+              <div class="stat-number" id="centro-count">0</div>
+              <div class="stat-label">Centro</div>
+            </div>
+            <div
+              class="stat-card"
+              style="background: var(--light-blue); color: var(--primary-blue)"
+            >
+              <div class="stat-number" id="liberdade-count">0</div>
+              <div class="stat-label">Liberdade</div>
+            </div>
+            <div
+              class="stat-card"
+              style="background: var(--light-blue); color: var(--primary-blue)"
+            >
+              <div class="stat-number" id="vila-madalena-count">0</div>
+              <div class="stat-label">Vila Madalena</div>
+            </div>
+            <div
+              class="stat-card"
+              style="background: var(--light-blue); color: var(--primary-blue)"
+            >
+              <div class="stat-number" id="itaquera-count">0</div>
+              <div class="stat-label">Itaquera</div>
+            </div>
+            <div
+              class="stat-card"
+              style="background: var(--light-blue); color: var(--primary-blue)"
+            >
+              <div class="stat-number" id="moema-count">0</div>
+              <div class="stat-label">Moema</div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </body>
+  <script src="../js/app.js"></script>
+  <script src="../js/veriador.js"></script>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nova Denúncia - Cidade em Dia</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <link rel="stylesheet" href="../styles/denuncia.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="container">
+        <div class="header-content">
+          <a
+            href="#"
+            class="logo"
+            onclick="CidadeEmDia.redirecionarParaDashboard(); return false;"
+          >
+            <i class="fas fa-city"></i>
+            <span>Cidade em Dia</span>
+          </a>
+
+          <a href="./dashboard.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            Voltar ao Dashboard
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="container">
+        <div class="form-container">
+          <div class="form-header">
+            <h1 class="form-title">Nova Denúncia</h1>
+            <p class="form-subtitle">
+              Ajude a melhorar sua cidade reportando problemas urbanos
+            </p>
+          </div>
+
+          <form class="form-content" id="denunciaForm">
+            <div class="alert alert-error" id="errorAlert"></div>
+            <div class="alert alert-success" id="successAlert"></div>
+
+            <!-- Título -->
+            <div class="form-group">
+              <label for="titulo">Título da Denúncia *</label>
+              <input
+                type="text"
+                id="titulo"
+                name="titulo"
+                required
+                placeholder="Ex: Buraco na rua principal"
+              />
+            </div>
+
+            <!-- Categoria -->
+            <div class="form-group">
+              <label>Categoria *</label>
+              <div class="category-options">
+                <div class="category-option" data-value="buraco">
+                  <div class="category-icon">🕳️</div>
+                  <div class="category-label">Buraco</div>
+                </div>
+                <div class="category-option" data-value="lixo">
+                  <div class="category-icon">🗑️</div>
+                  <div class="category-label">Lixo</div>
+                </div>
+                <div class="category-option" data-value="iluminacao">
+                  <div class="category-icon">💡</div>
+                  <div class="category-label">Iluminação</div>
+                </div>
+                <div class="category-option" data-value="queimada">
+                  <div class="category-icon">🔥</div>
+                  <div class="category-label">Queimada</div>
+                </div>
+                <div class="category-option" data-value="outros">
+                  <div class="category-icon">⚠️</div>
+                  <div class="category-label">Outros</div>
+                </div>
+              </div>
+              <input type="hidden" id="categoria" name="categoria" required />
+            </div>
+
+            <!-- Descrição -->
+            <div class="form-group">
+              <label for="descricao">Descrição *</label>
+              <textarea
+                id="descricao"
+                name="descricao"
+                required
+                placeholder="Descreva detalhadamente o problema encontrado..."
+              ></textarea>
+            </div>
+
+            <!-- Localização -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="bairro">Bairro</label>
+                <input
+                  type="text"
+                  id="bairro"
+                  name="bairro"
+                  placeholder="Nome do bairro"
+                />
+              </div>
+              <div class="form-group">
+                <label for="rua">Rua</label>
+                <input
+                  type="text"
+                  id="rua"
+                  name="rua"
+                  placeholder="Nome da rua"
+                />
+              </div>
+            </div>
+
+            <!-- Mapa -->
+            <div class="form-group">
+              <label>Localização no Mapa</label>
+              <div class="map-instructions">
+                <i class="fas fa-info-circle"></i>
+                Clique no mapa para marcar a localização exata do problema
+              </div>
+              <div class="map-container" id="map"></div>
+              <input type="hidden" id="latitude" name="latitude" />
+              <input type="hidden" id="longitude" name="longitude" />
+            </div>
+
+            <!-- Actions -->
+            <div class="form-actions">
+              <a href="./dashboard.html" class="btn btn-secondary">Cancelar</a>
+              <button type="submit" class="btn btn-primary" id="submitBtn">
+                <span class="loading" id="loading">
+                  <i class="fas fa-spinner fa-spin"></i>
+                </span>
+                <span id="btnText">Enviar Denúncia</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </body>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/denuncia.js"></script>
+</html>
